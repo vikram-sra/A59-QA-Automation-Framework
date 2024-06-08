@@ -22,3 +22,5 @@ test {
         //suites "src/test/resources/Regression.xml"
     }
 }
+
+task testSmoke(ty)
