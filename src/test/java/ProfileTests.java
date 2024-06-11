@@ -1,5 +1,6 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -57,7 +58,7 @@ public class ProfileTests extends BaseTest{
     }
 
     private void navigateToProfilePage() {
-        WebElement profileName = driver.findElement(By.cssSelector("span.name"));
+        WebElement profileName = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("span.name")));
         profileName.click();
     }
 }

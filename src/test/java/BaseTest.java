@@ -4,6 +4,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
 
 import java.time.Duration;
@@ -12,6 +16,10 @@ public class BaseTest {
 
     WebDriver driver = null;
     ChromeOptions options = new ChromeOptions();
+
+    WebDriverWait wait;
+
+    Wait<WebDriver> fluentWait;
 
 
 
@@ -32,6 +40,11 @@ public class BaseTest {
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().window().maximize();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        fluentWait = new FluentWait<WebDriver>(driver)
+                .withTimeout(Duration.ofSeconds(5))
+                .pollingEvery(Duration.ofMillis(200));
         navigateToPage(baseURL);
     }
 
@@ -41,19 +54,24 @@ public class BaseTest {
     }
 
     protected void submit() throws InterruptedException {
-        WebElement submit = driver.findElement(By.cssSelector("button[type='submit']"));
+        //WebElement submit = driver.findElement(By.cssSelector("button[type='submit']"));
+        WebElement submit = wait.until
+                (ExpectedConditions.visibilityOfElementLocated(By.cssSelector("button[type='submit']")));
         submit.click();
-        Thread.sleep(1000);
+
     }
 
     protected void enterPassword(String password) {
-        WebElement passwordField = driver.findElement(By.cssSelector("input[type='password']"));
+        WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type='password']")));
+        //WebElement passwordField = driver.findElement(By.cssSelector("input[type='password']"));
         passwordField.clear();
         passwordField.sendKeys(password);
     }
 
     protected void enterEmail(String email) {
-        WebElement emailField = driver.findElement(By.cssSelector("input[type='email']"));
+        WebElement emailField = wait.until
+                (ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type='email']")));
+        //WebElement emailField = driver.findElement(By.cssSelector("input[type='email']"));
         emailField.clear();
         emailField.sendKeys(email);
     }

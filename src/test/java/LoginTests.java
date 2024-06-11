@@ -1,5 +1,6 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -12,8 +13,9 @@ public class LoginTests extends BaseTest {
         enterEmail("demo@testpro.io");
         enterPassword("te$t$tudent");
         submit();
-
-        WebElement avatarIcon = driver.findElement(By.cssSelector("img[class='avatar']"));
+        //Thread.sleep(2000);
+        WebElement avatarIcon = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("img[class='avatar']")));
+        //WebElement avatarIcon = driver.findElement(By.cssSelector("img[class='avatar']"));
         // Expected Result
         Assert.assertTrue(avatarIcon.isDisplayed());
     }
@@ -28,7 +30,6 @@ public class LoginTests extends BaseTest {
         enterPassword("te$t$tudent");
         submit();
 
-        Thread.sleep(2000); // Sleep or pause for 2 seconds (adjust as needed)
         // Expected Result
         Assert.assertEquals(driver.getCurrentUrl(), expectedUrl); // https://qa.koel.app/
     }
@@ -40,8 +41,6 @@ public class LoginTests extends BaseTest {
         String expectedUrl = "https://qa.koel.app/";
         enterEmail("invalid@testpro.io");
         submit();
-
-        Thread.sleep(2000); // Sleep or pause for 2 seconds (adjust as needed)
         // Expected Result
         Assert.assertEquals(driver.getCurrentUrl(), expectedUrl); //https://qa.koel.app/
     }
