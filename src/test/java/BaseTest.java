@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
@@ -14,15 +15,11 @@ import java.time.Duration;
 
 public class BaseTest {
 
-    WebDriver driver = null;
-    ChromeOptions options = new ChromeOptions();
-
-    WebDriverWait wait;
-
-    Wait<WebDriver> fluentWait;
-
-
-
+    public WebDriver driver = null;
+    public ChromeOptions options = new ChromeOptions();
+    public WebDriverWait wait;
+    public Wait<WebDriver> fluentWait;
+    public Actions actions = null;
 
     //String url = "https://qa.koel.app/";
 

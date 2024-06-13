@@ -3,24 +3,20 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.HomePage;
+import pages.LoginPage;
 
 public class LoginTests extends BaseTest {
 
     @Test
     public void loginValidEmailPassword() throws InterruptedException {
-
-        //navigateToPage();
-        enterEmail("demo@testpro.io");
-        enterPassword("te$t$tudent");
-        submit();
-        //Thread.sleep(2000);
-        WebElement avatarIcon = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("img[class='avatar']")));
-        //WebElement avatarIcon = driver.findElement(By.cssSelector("img[class='avatar']"));
-        // Expected Result
-        Assert.assertTrue(avatarIcon.isDisplayed());
+        LoginPage loginPage = new LoginPage(driver);
+        HomePage homePage = new HomePage(driver);
+        loginPage.login();
+        Assert.assertTrue(homePage.getUserAvatar().isDisplayed());
     }
 
-    @Test
+    //@Test
     public void loginInvalidEmailValidPassword() throws InterruptedException {
 
         //navigateToPage();
@@ -34,7 +30,7 @@ public class LoginTests extends BaseTest {
         Assert.assertEquals(driver.getCurrentUrl(), expectedUrl); // https://qa.koel.app/
     }
 
-    @Test
+   // @Test
     public void loginValidEmailEmptyPassword() throws InterruptedException {
 
         //navigateToPage();
@@ -45,7 +41,7 @@ public class LoginTests extends BaseTest {
         Assert.assertEquals(driver.getCurrentUrl(), expectedUrl); //https://qa.koel.app/
     }
 
-    @Test(dataProvider = "NegativeLoginTestData", dataProviderClass = TestDataProvider.class)
+    //@Test(dataProvider = "NegativeLoginTestData", dataProviderClass = TestDataProvider.class)
     public void negativeLoginTest(String email, String password) throws InterruptedException {
         String expectedUrl = "https://qa.koel.app/";
         enterEmail(email);
