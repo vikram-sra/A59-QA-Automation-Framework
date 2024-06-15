@@ -4,6 +4,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.AllSongsPage;
+import pages.HomePage;
 import pages.LoginPage;
 
 import java.util.List;
@@ -13,17 +15,23 @@ public class ActionsTest extends BaseTest{
     //Test #1 Contextual Click
     @Test
     public void playSong() throws InterruptedException{
-        //Background steps
-        enterEmail("demo@class.com");
-        enterPassword("te$t$tudent");
-        submit();
+
+        LoginPage loginPage = new LoginPage(driver);
+        HomePage homePage = new HomePage(driver);
+        AllSongsPage allSongsPage = new AllSongsPage(driver);
+
+        //loginPage.provideEmail("demo@class.com");
+        //loginPage.providePassword("te$t$tudent");
+        //loginPage.clickSubmit();
+        loginPage.login();
+
         //Choose All Songs
-        chooseAllSongsList();
+        homePage.chooseAllSongsList();
         //Contextual Click on the first song
-        contextClickFirstSong();
+        allSongsPage.contextClickFirstSong();
         //Click on Play from the menu
-        choosePlayOption();
-        Assert.assertTrue(isPlaying());
+        allSongsPage.choosePlayOption();
+        Assert.assertTrue(allSongsPage.isSongPlaying());
     }
 
     public void chooseAllSongsList() {
@@ -43,6 +51,7 @@ public class ActionsTest extends BaseTest{
         WebElement soundBarVisualizer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-testid = 'sound-bar-play']")));
         return soundBarVisualizer.isDisplayed();
     }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
