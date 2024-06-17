@@ -1,15 +1,14 @@
 package pageFactory;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.BasePage;
 
-public class LoginPage extends BasePage {
+public class LoginPageFromFactory extends BasePage {
 
     //CONSTRUCTOR
-    public LoginPage(WebDriver givenDriver){
+    public LoginPageFromFactory(WebDriver givenDriver){
         super(givenDriver);
     }
 
@@ -28,18 +27,18 @@ public class LoginPage extends BasePage {
     WebElement submitBtn;
 
     //PAGE METHODS
-    public LoginPage provideEmail(String email){
+    public LoginPageFromFactory provideEmail(String email){
         emailField.sendKeys(email);
         //findElement(emailField).sendKeys(email);
         return this;
     }
 
-    public LoginPage providePassword(String password){
+    public LoginPageFromFactory providePassword(String password){
         passwordField.sendKeys(password);
         //findElement(passwordField).sendKeys();
         return this;
     }
-    public LoginPage clickSubmit(){
+    public LoginPageFromFactory clickSubmit(){
         submitBtn.click();
         //findElement(submitBtn).click();
         return this;
