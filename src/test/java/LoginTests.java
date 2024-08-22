@@ -6,33 +6,37 @@ import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.LoginPage;
 //import pageFactory.LoginPage;
+import java.time.Duration;
 
 public class LoginTests extends BaseTest {
 
     @Test
-    public void loginValidEmailPassword() throws InterruptedException{
-        LoginPage loginPage = new LoginPage(driver);
-        HomePage homePage = new HomePage(driver);
+    public void loginValidEmailPassword() throws InterruptedException {
+        LoginPage loginPage = new LoginPage(getDriver());
+        HomePage homePage = new HomePage(getDriver());
 
-        loginPage.provideEmail("demo@testpro.io");
-        loginPage.providePassword("te$t$tudent");
+        loginPage.provideEmail("vikramjit@testpro.io");
+        loginPage.providePassword("Vv3ZKxcI");
         loginPage.clickSubmit();
 
         Assert.assertTrue(homePage.getUserAvatar().isDisplayed());
     }
 
-    //@Test
+    @Test
     public void loginInvalidEmailValidPassword() throws InterruptedException {
 
         //navigateToPage();
         String expectedUrl = "https://qa.koel.app/";
         // Steps
-        enterEmail("invalid@testpro.io");
-        enterPassword("te$t$tudent");
-        submit();
+       LoginPage loginPage = new LoginPage(getDriver());
+       //HomePage homePage = new HomePage(getDriver());
+
+       loginPage.provideEmail("demodd@testpro.io");
+       loginPage.providePassword("te$t$tudent");
+       loginPage.clickSubmit();
 
         // Expected Result
-        Assert.assertEquals(driver.getCurrentUrl(), expectedUrl); // https://qa.koel.app/
+        Assert.assertEquals(getDriver().getCurrentUrl(), expectedUrl); // https://qa.koel.app/
     }
 
    // @Test
