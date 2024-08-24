@@ -3,6 +3,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.HomePage;
+import pages.LoginPage;
 
 import java.util.UUID;
 
@@ -61,4 +63,17 @@ public class ProfileTests extends BaseTest{
         WebElement profileName = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("span.name")));
         profileName.click();
     }
+
+    @Test
+    public void changeCurrentTheme(){
+        LoginPage loginPage = new LoginPage(driver);
+        HomePage homePage = new HomePage(driver);
+        //Login
+        //Select User
+        //Change color
+        //verify color
+
+
+    }
+
 }

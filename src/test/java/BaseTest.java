@@ -19,7 +19,9 @@ import org.testng.annotations.*;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.time.Duration;
+import java.util.HashMap;
 
 public class BaseTest {
 
@@ -28,6 +30,8 @@ public class BaseTest {
     public WebDriverWait wait;
     public Wait<WebDriver> fluentWait;
     public Actions actions = null;
+
+    private static final ThreadLocal<WebDriver> threadDriver = new ThreadLocal<>();
 
     //String url = "https://qa.koel.app/";
 
@@ -41,6 +45,14 @@ public class BaseTest {
 
     @BeforeMethod
     @Parameters({"BaseURL"})
+    public void setBrowser(String baseURL) throws MalformedURLException{
+        threadDriver.set(pickBrowser(System.getProperty("browser")));
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        getDriver().manage().window().maximize();
+        navigateToPage(baseURL);
+    }
+
+
     public void launchBrowser(String baseURL) throws MalformedURLException{
         // Pre-condition
         // Added ChromeOptions argument below to fix websocket error
@@ -59,7 +71,11 @@ public class BaseTest {
         navigateToPage(baseURL);
     }
 
-    public static WebDriver pickBrowser(String browser) throws MalformedURLException {
+    public static WebDriver getDriver(){
+        return threadDriver.get();
+    }
+
+    public WebDriver pickBrowser(String browser) throws MalformedURLException {
         DesiredCapabilities caps = new DesiredCapabilities();
         String gridURL = "http://192.168.40.1:4444";
         switch(browser){
@@ -85,6 +101,8 @@ public class BaseTest {
                 caps.setCapability("browserName", "chrome");
                 return driver = new RemoteWebDriver(URI.create(gridURL).toURL(), caps);
 
+            case "cloud":
+                return lambdaTest();
 
             default:
                 WebDriverManager.chromedriver().setup();
@@ -94,7 +112,33 @@ public class BaseTest {
         }
     }
 
+    public WebDriver lambdaTest() throws MalformedURLException{
+
+        String hubUrl = "https://hub.lambdatest.com/wd/hub";
+
+        ChromeOptions browserOptions = new ChromeOptions();
+        browserOptions.setPlatformName("Windows 10");
+        browserOptions.setBrowserVersion("122.0");
+        HashMap<String, Object> ltOptions = new HashMap<String, Object>();
+        ltOptions.put("username", "vikram00008");
+        ltOptions.put("accessKey", "AAOxL89E3ikNuZHjlFlVvE4epEdTFpQhBfqSnOZ2JmmysY5pHJ");
+        ltOptions.put("build", "Selenium 4");
+        ltOptions.put("name", this.getClass().getName());
+        ltOptions.put("platformName", "Windows 10");
+        ltOptions.put("seCdp", true);
+        ltOptions.put("selenium-version", "4.0.0");
+        browserOptions.setCapability("LT:Options", ltOptions);
+
+        return new RemoteWebDriver(new URL(hubUrl), browserOptions);
+
+    }
+
     @AfterMethod
+    public void tearDown(){
+        threadDriver.get().close();
+        threadDriver.remove();
+    }
+
     public void closeBrowser(){
         driver.quit();
     }
@@ -122,7 +166,7 @@ public class BaseTest {
         emailField.sendKeys(email);
     }
 
-    protected void navigateToPage(String url) {
-        driver.get(url);
+    public void navigateToPage(String url) {
+        getDriver().get(url);
     }
 }
